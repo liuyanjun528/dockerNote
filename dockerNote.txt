@@ -1,0 +1,63 @@
+docker 安装
+
+1.yum install -y epel-release
+
+2.yum install docker-io  如果出错 ：把/etc/yum.repos.d/epel.repo，文件第3行注释去掉，把第四行注释掉，还报错https://blog.csdn.net/qq_40707682/article/details/89885540
+卸载
+t@centos1 ~]# yum list installed | grep docker
+docker-io.x86_64        0.6.2-1.el6     @hop5                                   
+[root@centos1 ~]# sudo yum -y remove docker-io.x86_64        0.6.2-1.el6     @hop5
+
+
+升级内核  https://blog.csdn.net/qq_31391283/article/details/86217603
+
+centOs7   安装
+
+# step 1: 安装必要的一些系统工具
+sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+# Step 2: 添加软件源信息
+sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+# Step 3: 更新并安装Docker-CE
+sudo yum makecache fast
+sudo yum -y install docker-ce
+# Step 4: 开启Docker服务
+sudo service docker start
+
+docker --help   帮助命令
+
+docker  images  查看本地镜像  参数-a   包含内层镜像
+docker search  tomact    dockerhup 仓库中查找镜像
+docker pull tomcat 版本    拉取镜像，注意！不加版本默认拉latest 最新版
+docker rmi mysql   删除镜像，不指定版本，默认删除latest
+docker rmi -f mysql  nginx 删除多个镜像，不指定版本，默认删除latest
+docker run  镜像    利用镜像模板创建一个docker容器并运行，本地没有镜像会去仓库拉取，并启动
+docker run -it  镜像   以前台交互的方式运行，（返回一个带容器id的终端命令行，操作容器）
+exit  退出    Ctrl  p+q   回到宿主机不退出容器  重新进入容器  docker attach 容器id
+docker run -d  镜像   以后台的方式运行，（如果没有命令可执行，会自动退出）
+docker run -it -p 8888:8080  tomcat       -p映射容器端口   8888 代表linux 本机的端口，映射到容器中tomcat的8080   大写P 是随机分配linux映射端口
+docker commit -m=“提交信息”  -a=“作者”  容器id   镜像名：标签版本      创建镜像
+
+ docker run -d -p 8081:8080 jenkins  每次都是生成一个新的容器=new （）；
+docker ps  查看docker 运行的容器
+docker ps -l  查看上一个docker 运行的容器
+docker ps -a 查看所有容器
+docker  start  容器id    启动容器
+docker restart 镜像名  重新启动容器
+docker stop  容器名，或者容器id   停止容器
+docker kill  容器id  强制停止
+docker rm  id   删除已停止的容器  多删后面加空格然后容器id
+docker rm -f id   强制删除正在运行的容器
+使用-v命令添加数据卷      宿主机和容器sentos 建立连接  实现数据共享连接
+docker run -it -v /sentosAA:/dockAA:ro 9f38484d220f    /sentosAA宿主机路径    dockAA   docker路径   9f38484d220f 镜像id  ro只读，容器只可读
+docker inspect b45fe60408d0   查看容器信息
+查看一个容器的详情 docker inspect 容器ID/容器别名
+
+  docker run -d --name jenkins -p 8081:8080  jenkins  
+docker exec -it 容器名称   /bin/bash  进入容器开启一个交互式终端   exit退出
+cat /var/jenkins_home/secrets/initialAdminPassword  查看jenkins初始密码
+
+
+
+
+
+
